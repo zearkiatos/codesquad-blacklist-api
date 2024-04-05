@@ -1,0 +1,40 @@
+version: "3.9"
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: codesquad-blacklist-api
+    restart: always
+    volumes:
+      - ".:/app"
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env.dev
+    tty: true
+    depends_on:
+      - db
+    links:
+      - db
+    networks:
+      - api_net
+  db:
+    image: postgres
+    env_file:
+      - .env.db
+    container_name: codesquad-blacklist-db
+    volumes:
+      - "./data/postgres:/var/lib/postgresql"
+    ports:
+      - "5432:5432"
+    networks:
+      - db_net
+      - api_net
+networks:
+  api_net:
+    name: api_net
+    driver: bridge
+  db_net:
+    name: db_net
+    driver: bridge
