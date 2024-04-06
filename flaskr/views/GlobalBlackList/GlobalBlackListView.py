@@ -25,10 +25,8 @@ class GlobalBlackListView(Resource):
         método para consultar un email en la lista negra
         '''
         email_in_list=GlobalBlackList.query.filter_by(email=email_to_find).first()
-        if email_in_list:
-            return True
-        else:
-            return False
+        return email_in_list
+
 
 
     def get(self,email):
@@ -42,9 +40,15 @@ class GlobalBlackListView(Resource):
         '''
         construyendo respuesta
         '''
-        email_is_in_list=self.queryEmailInBlackList(email)
+        email_in_list=self.queryEmailInBlackList(email)
 
-        return {
-            'result':email_is_in_list
-        },HTTPStatus.OK
-
+        if email_in_list:
+            return {
+                'exist':True,
+                'reason':email_in_list.reason
+            },HTTPStatus.OK
+        else:
+            return {
+                        'exist':False,
+                        'reason':None
+                    },HTTPStatus.NOT_FOUND
