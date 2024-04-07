@@ -112,8 +112,6 @@ docker compose up --build
     docker ps
 ```
 
-[ADDING HERE A IMAGE]
-
 # Validate API health
 
 You can call the health check, for example:
