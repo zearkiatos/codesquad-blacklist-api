@@ -47,4 +47,42 @@ class GlobalBlackListView(Resource):
         return {
             'result':email_is_in_list
         },HTTPStatus.OK
+        
+    def post(self):
+        '''
+        api post para agregar un correo a la lista negra
+        '''
+        logging.basicConfig(level=logging.INFO)
+        self.logger = logging.getLogger('default')
+        self.logger.info(f'Agregando correo a la lista negra')
+
+        try:
+            data = request.get_json()
+            email_to_add = data.get('email')
+
+            if not email_to_add:
+                return {'message': 'El correo no se proporcionó en la solicitud'}, HTTPStatus.BAD_REQUEST
+
+            # Verificar si el correo ya está en la lista negra
+            if self.queryEmailInBlackList(email_to_add):
+                return {'message': 'El correo ya está en la lista negra'}, HTTPStatus.CONFLICT
+
+            # Obtener la dirección IP del cliente que hace la solicitud
+            ip_address = request.remote_addr
+
+            # Agregar el correo a la lista negra con los atributos adicionales
+            new_entry = GlobalBlackList(
+                email=email_to_add,
+                app_uuid=uuid.uuid4(),
+                ip_address=ip_address,
+                createdAt=func.now()
+            )
+            db.session.add(new_entry)
+            db.session.commit()
+
+            return {'message': 'Correo agregado a la lista negra correctamente'}, HTTPStatus.CREATED
+
+        except Exception as e:
+            self.logger.error(f'Error al agregar correo a la lista negra: {e}')
+            return {'message': 'Error interno al procesar la solicitud'}, HTTPStatus.INTERNAL_SERVER_ERROR
 
