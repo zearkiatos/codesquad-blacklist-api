@@ -11,6 +11,7 @@ import re
 import pytz
 import logging
 import traceback
+from ...middlewares.authMiddleware import *
 
 
 class GlobalBlackListView(Resource):
@@ -30,7 +31,7 @@ class GlobalBlackListView(Resource):
         else:
             return False
 
-
+    @require_bearer_token
     def get(self,email):
         '''
         api get para la vista GlobalBlackList
@@ -47,7 +48,8 @@ class GlobalBlackListView(Resource):
         return {
             'result':email_is_in_list
         },HTTPStatus.OK
-        
+
+    @require_bearer_token    
     def post(self):
         '''
         api post para agregar un correo a la lista negra
