@@ -1,6 +1,6 @@
-from flask import   request
+from flask import  request
 from http import HTTPStatus
-from ...config.config import Config
+from config.config import Config
 
 config=Config()
 
