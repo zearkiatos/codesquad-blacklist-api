@@ -44,6 +44,7 @@ api = Api(app)
 
 #resources
 api.add_resource(HealthCheckView, '/health')
-api.add_resource(GlobalBlackListView, '/blacklists/<string:email>')
+api.add_resource(GlobalBlackListView, '/blacklists/<string:email>',endpoint='verify')
+api.add_resource(GlobalBlackListView, '/blacklists',endpoint='create')
 
 jwt = JWTManager(app)

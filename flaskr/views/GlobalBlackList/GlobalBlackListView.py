@@ -1,3 +1,4 @@
+import uuid
 from flask_restful import Resource
 from flask import Flask, request, jsonify
 import base64
@@ -12,6 +13,7 @@ import pytz
 import logging
 import traceback
 from ...middlewares.authMiddleware import *
+from sqlalchemy.sql import func
 
 
 class GlobalBlackListView(Resource):
@@ -53,6 +55,8 @@ class GlobalBlackListView(Resource):
                         'exist':False,
                         'reason':None
                     },HTTPStatus.NOT_FOUND
+        
+        
     @require_bearer_token    
     def post(self):
         '''
