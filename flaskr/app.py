@@ -14,7 +14,7 @@ import logging
 config = Config()
 
 
-app = create_app('default')
+application = create_app('default')
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('default')
 
@@ -27,24 +27,24 @@ def before_server_stop(*args, **kwargs):
 signal.signal(signal.SIGTERM, before_server_stop)
 
 
-app.json_encoder = JSONCustomEncoder
+application.json_encoder = JSONCustomEncoder
 
-app_context = app.app_context()
+app_context = application.app_context()
 app_context.push()
 
-cors = CORS(app)
+cors = CORS(application)
 
 
 #initialize database
-db.init_app(app)
+db.init_app(application)
 db.create_all()
 
 
-api = Api(app)
+api = Api(application)
 
 #resources
 api.add_resource(HealthCheckView, '/health')
 api.add_resource(GlobalBlackListView, '/blacklists/<string:email>',endpoint='verify')
 api.add_resource(GlobalBlackListView, '/blacklists',endpoint='create')
 
-jwt = JWTManager(app)
+jwt = JWTManager(application)
