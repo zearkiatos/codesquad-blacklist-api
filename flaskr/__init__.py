@@ -4,6 +4,7 @@ from datetime import timedelta
 import os
 
 
+DATABASE_URI = 
 def create_app(config_name):
     config = Config()
     app = Flask(__name__)
