@@ -5,6 +5,15 @@ This is an python 🐍 with flask 🌶️ api to management the blacklist for a 
 [![Python](https://img.shields.io/badge/python-2b5b84?style=for-the-badge&logo=python&logoColor=white&labelColor=000000)]()
 [![Flask](https://img.shields.io/badge/flask-000000?style=for-the-badge&logo=flask&logoColor=white&labelColor=000000)]()
 
+
+# Postman documentation 🧑🏻‍🚀🚀
+
+You can check the postman documentation make a clic in the next
+
+[![POSTMAN](https://img.shields.io/badge/postman-ff6c37?style=for-the-badge&logo=postman&logoColor=white&labelColor=000000)](https://documenter.getpostman.com/view/1347256/2sA3Bj7Z4w)
+
+URL: [https://documenter.getpostman.com/view/1347256/2sA3Bj7Z4w](https://documenter.getpostman.com/view/1347256/2sA3Bj7Z4w)
+
 # Prerequirements
 
 * Python 🐍
@@ -26,6 +35,26 @@ APP_NAME=codesquad-blacklist-api
 SECRET_KEY=[SECRET_KEY]
 JWT_SECRET_KEY=[SECRET_KEY]
 DATA_BASE_URI=[DATA_BASE_URL]
+```
+The **.env.dev** for your local environment
+
+```txt
+FLASK_APP=flaskr/app
+FLASK_ENV=development
+APP_NAME=codesquad-blacklist-api
+SECRET_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnZpcm9ubWVudCI6ImRldmVsb3BtZW50IiwiYXBwbGljYXRpb24iOiJjb2Rlc3F1YWQtYmxhY2tsaXN0LWFwaSJ9.yJu4GXzVheB7U4VNFAEc2iElgUYf3UtQErhHDDK2vgo
+JWT_SECRET_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnZpcm9ubWVudCI6ImRldmVsb3BtZW50IiwiYXBwbGljYXRpb24iOiJjb2Rlc3F1YWQtYmxhY2tsaXN0LWFwaSJ9.yJu4GXzVheB7U4VNFAEc2iElgUYf3UtQErhHDDK2vgo
+DATA_BASE_URI=postgresql://postgres:postgres@db:5432/blacklist
+```
+
+The **.env.db** for your local db environment
+
+```txt
+POSTGRES_DB=blacklist
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_PORT=5432
+PGPORT=5432
 ```
 
 2. First step you should activate the python environment
@@ -117,7 +146,7 @@ docker compose up --build
 You can call the health check, for example:
 
 ```sh
-$ curl --location 'http://localhost:5000/health'
+$ curl -X GET --location 'http://localhost:5000/health'
 ```
 
 You must receive a request like next:
@@ -127,4 +156,26 @@ You must receive a request like next:
     "application": "codesquad-blacklist-api",
     "status": 200
 }
+```
+
+# Postman important configuration
+
+1. You should have the collection inside a postman folder
+
+2. You should have the postman collection and environment imported in your postman application
+
+3. For endpoint POST blacklist, you should have configured the next pre request script
+
+> [!IMPORTANT]  
+> You could find this in the postman folder as pre-script.js
+
+```js
+const uuid = require('uuid');
+const generatedUUID = uuid.v4();
+
+const jsonData = JSON.parse(pm.request.body);
+const email = jsonData.email;
+
+pm.environment.set("CODESQUAD_BLACKLIST_UUID", generatedUUID);
+pm.environment.set("CODESQUAD_BLACKLIST_EMAIL", email);
 ```

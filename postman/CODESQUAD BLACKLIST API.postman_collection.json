@@ -1,0 +1,142 @@
+{
+	"info": {
+		"_postman_id": "0eee2c26-183c-4244-b523-a12feb26c76e",
+		"name": "CODESQUAD BLACKLIST API",
+		"description": "This is an python 🐍 with flask 🌶️ api to management the blacklist for a company",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1347256"
+	},
+	"item": [
+		{
+			"name": "health",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{CODESQUAD_BLACKLIST_BASE_URL}}/health",
+					"host": [
+						"{{CODESQUAD_BLACKLIST_BASE_URL}}"
+					],
+					"path": [
+						"health"
+					]
+				},
+				"description": "This is an endpoint to check the healthy 🩺 of the api"
+			},
+			"response": []
+		},
+		{
+			"name": "POST blacklist",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const uuid = require('uuid');",
+							"const generatedUUID = uuid.v4();",
+							"",
+							"const jsonData = JSON.parse(pm.request.body);",
+							"const email = jsonData.email;",
+							"",
+							"pm.environment.set(\"CODESQUAD_BLACKLIST_UUID\", generatedUUID);",
+							"pm.environment.set(\"CODESQUAD_BLACKLIST_EMAIL\", email);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{CODESQUAD_BLACKLIST_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"caprilespe@outlook.com\",\n  \"app_uuid\": \"{{CODESQUAD_BLACKLIST_UUID}}\",\n  \"blocked_reason\": \"Este correo ha sido bloqueado debido a actividades sospechosas.\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{CODESQUAD_BLACKLIST_BASE_URL}}/blacklists",
+					"host": [
+						"{{CODESQUAD_BLACKLIST_BASE_URL}}"
+					],
+					"path": [
+						"blacklists"
+					]
+				},
+				"description": "This is the endpoint to add an email address in the blacklist\n\nit is important to send a UUID in app_uuid for example\n\n``` json\n{\n  \"email\": \"caprilespe@outlook.com\",\n  \"app_uuid\": \"0d6e2750-2a28-4c10-af6d-aa3be4e9f669\",\n  \"blocked_reason\": \"Este correo ha sido bloqueado debido a actividades sospechosas.\"\n}\n\n ```"
+			},
+			"response": []
+		},
+		{
+			"name": "GET blacklist",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{CODESQUAD_BLACKLIST_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{CODESQUAD_BLACKLIST_BASE_URL}}/blacklists/{{CODESQUAD_BLACKLIST_EMAIL}}",
+					"host": [
+						"{{CODESQUAD_BLACKLIST_BASE_URL}}"
+					],
+					"path": [
+						"blacklists",
+						"{{CODESQUAD_BLACKLIST_EMAIL}}"
+					]
+				},
+				"description": "This is an endpoint with a GET method to get the state of an email by email address"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"value": "",
+			"type": "string"
+		}
+	]
+}
