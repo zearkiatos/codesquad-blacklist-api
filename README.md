@@ -157,3 +157,25 @@ You must receive a request like next:
     "status": 200
 }
 ```
+
+# Postman important configuration
+
+1. You should have the collection inside a postman folder
+
+2. You should have the postman collection and environment imported in your postman application
+
+3. For endpoint POST blacklist, you should have configured the next pre request script
+
+> [!IMPORTANT]  
+> You could find this in the postman folder as pre-script.js
+
+```js
+const uuid = require('uuid');
+const generatedUUID = uuid.v4();
+
+const jsonData = JSON.parse(pm.request.body);
+const email = jsonData.email;
+
+pm.environment.set("CODESQUAD_BLACKLIST_UUID", generatedUUID);
+pm.environment.set("CODESQUAD_BLACKLIST_EMAIL", email);
+```
