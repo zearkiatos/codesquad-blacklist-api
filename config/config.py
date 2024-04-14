@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 
 environment = os.getenv('FLASK_ENV')
 
-if environment == 'development':
+if environment == 'development' or environment == 'local':
     load_dotenv(dotenv_path='.env.dev')
 else:
     load_dotenv(dotenv_path='.env')

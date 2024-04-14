@@ -4,21 +4,47 @@ from flask_jwt_extended import JWTManager
 from .utils.json_custom_encoder import JSONCustomEncoder
 from flaskr import create_app
 from config import Config
-from .views import HealthCheckView
+from .views import HealthCheckView,GlobalBlackListView
+from .dataContext.sqlAlchemyContext import db
+import signal
+import logging
+
+
+
 config = Config()
 
 
-app = create_app('default')
-app.json_encoder = JSONCustomEncoder
+application = create_app('default')
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger('default')
 
-app_context = app.app_context()
+logger.info('Starting application....')
+
+def before_server_stop(*args, **kwargs):
+    logger.info('Closing application ...')
+
+
+signal.signal(signal.SIGTERM, before_server_stop)
+
+
+application.json_encoder = JSONCustomEncoder
+
+app_context = application.app_context()
 app_context.push()
 
-cors = CORS(app)
+cors = CORS(application)
 
-api = Api(app)
+
+#initialize database
+db.init_app(application)
+db.create_all()
+
+
+api = Api(application)
 
 #resources
 api.add_resource(HealthCheckView, '/health')
+api.add_resource(GlobalBlackListView, '/blacklists/<string:email>',endpoint='verify')
+api.add_resource(GlobalBlackListView, '/blacklists',endpoint='create')
 
-jwt = JWTManager(app)
+jwt = JWTManager(application)
