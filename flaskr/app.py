@@ -29,16 +29,14 @@ signal.signal(signal.SIGTERM, before_server_stop)
 
 application.json_encoder = JSONCustomEncoder
 
-app_context = application.app_context()
-app_context.push()
-
 cors = CORS(application)
 
-
-#initialize database
-db.init_app(application)
-db.create_all()
-
+if config.ENVIRONMENT != "test":
+    app_context = application.app_context()
+    app_context.push()
+    #initialize database
+    db.init_app(application)
+    db.create_all()
 
 api = Api(application)
 

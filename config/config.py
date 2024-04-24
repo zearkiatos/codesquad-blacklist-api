@@ -5,6 +5,8 @@ environment = os.getenv('FLASK_ENV')
 
 if environment == 'development' or environment == 'local':
     load_dotenv(dotenv_path='.env.dev')
+elif environment == "test":
+    load_dotenv(dotenv_path='.env.test')
 else:
     load_dotenv(dotenv_path='.env')
 
