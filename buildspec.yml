@@ -3,11 +3,15 @@ version: 0.2
 phases:
   pre_build:
     commands:
+      - echo 'Install dependencies'
       - apt-get update && apt-get install -y make
       - make install
+      - echo 'Finishing install phases'
   post_build:
     commands:
+      - echo 'Initializing tests 🧪'
       - make test
+      - echo 'Finishing tests'
 artifacts:
   files:
     - '**/*'
