@@ -19,7 +19,7 @@ class TestHealthCheck(TestCase):
         health_check_view = HealthCheckView()
         response = health_check_view.get()
         
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertEqual(response.json(), expected)
 
 if __name__ == '__main__':
