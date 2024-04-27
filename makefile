@@ -2,7 +2,7 @@ activate:
 	source run.sh; activate
 
 install:
-	source run.sh; install
+	pip install -r requirements.txt
 
 run:
 	source run.sh; run $(port)
