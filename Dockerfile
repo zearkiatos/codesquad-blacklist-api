@@ -17,4 +17,4 @@ RUN make install
 
 EXPOSE 5000
 
-ENTRYPOINT ["sh", "./docker/entrypoint.prod.sh"]
+CMD ["gunicorn", "-b", "0.0.0.0:5000", "wsgi:application"]

@@ -3,7 +3,7 @@ from config import Config
 from datetime import timedelta
 
 
-def create_app(config_name):
+def create_app(config_name = 'default'):
     config = Config()
     app = Flask(__name__)
     app.config['JWT_SECRET_KEY'] = config.JWT_SECRET_KEY
