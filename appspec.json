@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "Resources": [
+      {
+        "TargetService": {
+          "Type": "AWS::ECS::Service",
+          "Properties": {
+            "TaskDefinition": "codesquad-blacklist-task",
+            "LoadBalancerInfo": {
+              "ContainerName": "codesquad-blacklist-api",
+              "ContainerPort": 5000
+            }
+          }
+        }
+      }
+    ]
+  }
