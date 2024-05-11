@@ -10,7 +10,7 @@
           }
         ],
 
-        "image": "211125648163.dkr.ecr.us-east-2.amazonaws.com/codesquad-blacklist-api:latest",
+        "image": "codesquad-blacklist-api",
         "essential": true,
         "name": "codesquad-blacklist-api"
       }
