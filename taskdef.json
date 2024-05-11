@@ -10,7 +10,7 @@
           }
         ],
 
-        "image": "codesquad-blacklist-api",
+        "image": "<IMAGE1_NAME>",
         "essential": true,
         "name": "codesquad-blacklist-api"
       }
