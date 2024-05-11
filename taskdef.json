@@ -1,26 +1,50 @@
 {
-    "executionRoleArn": "arn:aws:iam::211125648163:role/ecsTaskExecutionRole",
-    "containerDefinitions": [
-      {
-        "portMappings": [
-          {
-            "hostPort": 5000,
-            "protocol": "tcp",
-            "containerPort": 5000
-          }
-        ],
+  "executionRoleArn": "arn:aws:iam::211125648163:role/ecsTaskExecutionRole",
+  "containerDefinitions": [
+    {
+      "portMappings": [
+        {
+          "hostPort": 5000,
+          "protocol": "tcp",
+          "containerPort": 5000,
+          "appProtocol": "http"
+        }
+      ],
+      "image": "<IMAGE1_NAME>",
+      "essential": true,
+      "environment": [
+        {
+          "name": "APP_NAME",
+          "value": " codesquad-blacklist-api"
+        },
+        {
+          "name": "DATA_BASE_URI",
+          "value": "postgresql://postgres:postgres@blacklistdb.cluster-custom-c70m8a66gtgi.us-east-2.rds.amazonaws.com:5432"
+        },
+        {
+          "name": "FLASK_APP",
+          "value": "flaskr/app"
+        },
+        {
+          "name": "SECRET_KEY",
+          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnZpcm9ubWVudCI6InByb2R1Y3Rpb24iLCJhcHBsaWNhdGlvbiI6ImNvZGVzcXVhZC1ibGFja2xpc3QtYXBpIn0.BKJg_kL16vPGi1gHCHj9cWAPL1ELgaVdv34WTjIbXpc"
+        },
+        {
+          "name": "FLASK_ENV",
+          "value": "production"
+        },
+        {
+          "name": "JWT_SECRET_KEY",
+          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnZpcm9ubWVudCI6InByb2R1Y3Rpb24iLCJhcHBsaWNhdGlvbiI6ImNvZGVzcXVhZC1ibGFja2xpc3QtYXBpIn0.BKJg_kL16vPGi1gHCHj9cWAPL1ELgaVdv34WTjIbXpc"
+        }
+      ],
+      "name": "codesquad-blacklist-api"
+    }
+  ],
 
-        "image": "<IMAGE1_NAME>",
-        "essential": true,
-        "name": "codesquad-blacklist-api"
-      }
-    ],
-
-    "requiresCompatibilities": [
-      "FARGATE"
-    ],
-    "networkMode": "awsvpc",
-    "cpu": "1024",
-    "memory": "2048",
-    "family": "codesquad-blacklist-task"
-  }
+  "requiresCompatibilities": ["FARGATE"],
+  "networkMode": "awsvpc",
+  "cpu": "1024",
+  "memory": "2048",
+  "family": "codesquad-blacklist-task"
+}
