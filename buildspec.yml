@@ -7,11 +7,36 @@ phases:
       - apt-get update && apt-get install -y make
       - make install
       - echo 'Finishing install phases'
+      - echo 'Logging in Amazon ECR'
+      - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 211125648163.dkr.ecr.us-east-2.amazonaws.com
+  build:
+    commands:
+      - echo 'Building docker image 🐳'
+      - docker build -t codesquad-blacklist-api .
+      - docker tag codesquad-blacklist-api:latest 211125648163.dkr.ecr.us-east-2.amazonaws.com/codesquad-blacklist-api:latest
+      - echo 'Finished docker image building 🐳'
   post_build:
     commands:
       - echo 'Initializing tests 🧪'
       - make test
       - echo 'Finishing tests'
+      - echo 'Pushing docker image 🐳'
+      - docker push 211125648163.dkr.ecr.us-east-2.amazonaws.com/codesquad-blacklist-api:latest
+      - echo 'Finishing Pushing docker image 🐳'
+      - echo Writing Image Definitions file...
+      - printf '[{"name":"codesquad-blacklist-api","imageUri":"211125648163.dkr.ecr.us-east-2.amazonaws.com/codesquad-blacklist-api:latest"}]' > imagedefinitions.json
+      - printf '{"ImageURI":"211125648163.dkr.ecr.us-east-2.amazonaws.com/codesquad-blacklist-api:latest"}' > imageDetail.json
+      - cat imagedefinitions.json 
 artifacts:
   files:
     - '**/*'
+    - imagedefinitions.json
+    - imageDetail.json
+  secondary-artifacts:
+    DefinitionArtifact:
+      files:
+        - appspec.yaml
+        - taskdef.json
+    ImageArtifact:
+      files:
+        - imageDetail.json
