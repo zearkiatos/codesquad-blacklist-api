@@ -1,4 +1,5 @@
 import uuid
+from http import HTTPStatus
 from flask_restful import Resource, reqparse
 from flask import Flask, request, jsonify
 import base64
@@ -14,6 +15,11 @@ import logging
 import traceback
 from ...middlewares.authMiddleware import *
 from sqlalchemy.sql import func
+from ...utils.logger import Logger
+
+log = Logger()
+
+config = Config()
 
 
 class GlobalBlackListView(Resource):
@@ -36,25 +42,28 @@ class GlobalBlackListView(Resource):
         '''
         api get para la vista GlobalBlackList
         '''
-        logging.basicConfig(level=logging.INFO)
-        self.logger = logging.getLogger('default')
-        self.logger.info(f'verificando el email')
+        log.info('Verifying email')
 
         '''
         construyendo respuesta
         '''
         email_in_list=self.queryEmailInBlackList(email)
+        try:
 
-        if email_in_list:
-            return {
-                'exist':True,
-                'reason':email_in_list.reason
-            },HTTPStatus.OK
-        else:
-            return {
-                        'exist':False,
-                        'reason':None
-                    },HTTPStatus.NOT_FOUND
+            if email_in_list:
+                log.info('Email was found')
+                return {
+                    'exist':True,
+                    'reason':email_in_list.reason
+                },HTTPStatus.OK
+            else:
+                log.info('Email was not found')
+                return {
+                            'exist':False,
+                            'reason':None
+                        },HTTPStatus.NOT_FOUND
+        except Exception as ex:
+            log.error(f'Some error occurred trying to add an email in a blacklist: {e}')
         
         
     @require_bearer_token    
@@ -77,10 +86,12 @@ class GlobalBlackListView(Resource):
         app_uuid = args['app_uuid']
         blocked_reason = args['blocked_reason']
 
+        log.info('Receiving request to add an email in the blacklist')
+
         try:
             # Verificar si el correo ya está en la lista negra
             if GlobalBlackList.query.filter_by(email=email_to_add).first():
-                return {'message': 'El correo ya está en la lista negra'}, 409
+                return {'message': 'El correo ya está en la lista negra'}, HTTPStatus.CONFLICT
 
             # Agregar el correo a la lista negra
             new_entry = GlobalBlackList(
@@ -92,8 +103,8 @@ class GlobalBlackListView(Resource):
             db.session.add(new_entry)
             db.session.commit()
 
-            return {'message': 'Correo agregado a la lista negra correctamente'}, 201
+            return {'message': 'Correo agregado a la lista negra correctamente'}, HTTPStatus.CREATED
         except Exception as e:
-            self.logger.error(f'Error al agregar correo a la lista negra: {e}')
-            return {'message': 'Error interno al procesar la solicitud'}, 500
+            log.error(f'Some error occurred trying to add an email in a blacklist: {e}')
+            return {'message': 'Error interno al procesar la solicitud'}, HTTPStatus.INTERNAL_SERVER_ERROR
 
