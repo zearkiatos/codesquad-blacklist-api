@@ -108,3 +108,18 @@ class GlobalBlackListView(Resource):
             log.error(f'Some error occurred trying to add an email in a blacklist: {e}')
             return {'message': 'Error interno al procesar la solicitud'}, HTTPStatus.INTERNAL_SERVER_ERROR
 
+
+class ErrorsListView(Resource):
+    '''
+    Esta clase corresponde a una api para la generación intencionada de errores
+    Attributes:
+        logger (loggin): logger para las operaciónes en la api.
+    '''
+     
+    def get(self):
+        '''
+        api get para la vista GlobalBlackList
+        '''
+        log.info('calculate divizion')
+        value=10/0
+        return {'result': f'{value}'}, HTTPStatus.OK 
