@@ -4,7 +4,7 @@ from flask_jwt_extended import JWTManager
 from .utils.json_custom_encoder import JSONCustomEncoder
 from flaskr import create_app
 from config import Config
-from .views import HealthCheckView,GlobalBlackListView
+from .views import HealthCheckView,GlobalBlackListView,ErrorsListView
 from .dataContext.sqlAlchemyContext import db
 import signal
 import logging
@@ -44,5 +44,8 @@ api = Api(application)
 api.add_resource(HealthCheckView, '/health')
 api.add_resource(GlobalBlackListView, '/blacklists/<string:email>',endpoint='verify')
 api.add_resource(GlobalBlackListView, '/blacklists',endpoint='create')
+api.add_resource(ErrorsListView, '/GenerateError',endpoint='generate_error')
+
+
 
 jwt = JWTManager(application)
