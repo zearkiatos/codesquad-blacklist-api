@@ -36,6 +36,26 @@
         {
           "name": "JWT_SECRET_KEY",
           "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnZpcm9ubWVudCI6InByb2R1Y3Rpb24iLCJhcHBsaWNhdGlvbiI6ImNvZGVzcXVhZC1ibGFja2xpc3QtYXBpIn0.BKJg_kL16vPGi1gHCHj9cWAPL1ELgaVdv34WTjIbXpc"
+        },
+        {
+          "name": "NEW_RELIC_LICENSE_KEY",
+          "value": "2faaaccf69bd3678382e3db100ed02b3FFFFNRAL"
+        },
+        {
+          "name": "NEW_RELIC_APP_NAME",
+          "value": "codesquad-blacklist-api"
+        },
+        {
+          "name": "NEW_RELIC_LOG",
+          "value": "stdout"
+        },
+        {
+          "name": "NEW_RELIC_DISTRIBUTED_TRACING_ENABLED",
+          "value": "true"
+        },
+        {
+          "name": "NEW_RELIC_LOG_LEVEL",
+          "value": "info"
         }
       ],
       "name": "codesquad-blacklist-api"
