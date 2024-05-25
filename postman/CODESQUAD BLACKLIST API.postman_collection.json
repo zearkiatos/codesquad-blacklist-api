@@ -77,7 +77,7 @@
 						"blacklists"
 					]
 				},
-				"description": "This is the endpoint to add an email address in the blacklist\n\nit is important to send a UUID in app_uuid for example\n\n``` json\n{\n  \"email\": \"caprilespe@outlook.com\",\n  \"app_uuid\": \"0d6e2750-2a28-4c10-af6d-aa3be4e9f669\",\n  \"blocked_reason\": \"Este correo ha sido bloqueado debido a actividades sospechosas.\"\n}\n\n ```"
+				"description": "This is the endpoint to add an email address in the blacklist\n\nit is important to send a UUID in app_uuid for example\n\n``` json\n{\n  \"email\": \"caprilespe@outlook.com\",\n  \"app_uuid\": \"0d6e2750-2a28-4c10-af6d-aa3be4e9f669\",\n  \"blocked_reason\": \"Este correo ha sido bloqueado debido a actividades sospechosas.\"\n}\n\n ```\n\nYou should have to configure the next pre-script\n```js\nconst uuid = require('uuid');\nconst generatedUUID = uuid.v4();\n\nconst jsonData = JSON.parse(pm.request.body);\nconst email = jsonData.email;\n\npm.environment.set(\"CODESQUAD_BLACKLIST_UUID\", generatedUUID);\npm.environment.set(\"CODESQUAD_BLACKLIST_EMAIL\", email);\n```"
 			},
 			"response": []
 		},
@@ -107,6 +107,24 @@
 					]
 				},
 				"description": "This is an endpoint with a GET method to get the state of an email by email address"
+			},
+			"response": []
+		},
+		{
+			"name": "GET Error",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{CODESQUAD_BLACKLIST_BASE_URL}}/GenerateError",
+					"host": [
+						"{{CODESQUAD_BLACKLIST_BASE_URL}}"
+					],
+					"path": [
+						"GenerateError"
+					]
+				},
+				"description": "This is a service to generate an error ⛔️"
 			},
 			"response": []
 		}
